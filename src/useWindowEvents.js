@@ -11,7 +11,7 @@ const listenerOpts = {capture: false, passive: true};
 
 // export
 
-export default function useWindowEvents(fn, events = [], ms = 0) {
+export function useWindowEvents(fn, events = [], ms = 0) {
   const [state, setState] = useRafState(fn());
 
   useEffect(() => {

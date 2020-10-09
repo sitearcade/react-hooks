@@ -19,6 +19,6 @@ function getSize() {
 
 // export
 
-export default function useWindowSize(ms) {
+export function useWindowSize(ms) {
   return useWindowEvents(getSize, events, ms);
 }

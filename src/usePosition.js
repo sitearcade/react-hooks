@@ -4,7 +4,7 @@ import {useRef, useCallback} from 'react';
 
 // fns
 
-export const getPosition = (el, pos = {x: 0, y: 0}) => {
+const getPosition = (el, pos = {x: 0, y: 0}) => {
   const newPos = {
     x: pos.x + el.offsetLeft - el.scrollLeft + el.clientLeft,
     y: pos.y + el.offsetTop - el.scrollTop + el.clientTop,
