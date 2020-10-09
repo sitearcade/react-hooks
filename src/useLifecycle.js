@@ -4,7 +4,7 @@ import {useEffect, useCallback, useRef} from 'react';
 
 // fns
 
-const noop = () => null;
+const noop = () => undefined;
 
 // state
 
@@ -50,14 +50,14 @@ export function useUpdateEffect(updateFn = noop, deps = null) {
   }, deps);
 }
 
-export function useUnmountEffect(unmountFn) {
+export function useUnmountEffect(unmountFn = noop) {
   const unmountRef = useRef(unmountFn);
   unmountRef.current = unmountFn;
 
   useEffect(() => unmountRef.current, []);
 }
 
-export function useLifecycleEffect(mountFn = noop, unmountFn = noop) {
+export function useLifecycleEffect(mountFn, unmountFn) {
   useMountEffect(mountFn);
   useUnmountEffect(unmountFn);
 }

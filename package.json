@@ -11,6 +11,7 @@
     "email": "mike@sitearcade.com",
     "url": "https://sitearcade.com"
   },
+  "type": "module",
   "sideEffects": false,
   "source": "src/index.js",
   "main": "./dist/index.js",
@@ -33,7 +34,9 @@
     "dist"
   ],
   "scripts": {
-    "start": "microbundle watch --no-compress",
+    "start": "run-p start:*",
+    "start:umd": "microbundle watch --no-compress -f umd --external none",
+    "start:mod": "microbundle watch --no-compress -f cjs,esm,modern",
     "build": "run-s build:* --",
     "build:umd": "microbundle --no-compress -f umd --external none",
     "build:mod": "microbundle --no-compress -f cjs,esm,modern",
@@ -43,7 +46,7 @@
     "test:watch": "NODE_ENV=testing jest --passWithNoTests --coverage --watch",
     "preversion": "npm run build && npm test",
     "postversion": "npm publish --access public",
-    "prepublish": "npm run clean && npm run build",
+    "prepublishOnly": "npm run clean && npm run build",
     "postpublish": "git push origin --all; git push origin --tags"
   },
   "dependencies": {
@@ -55,9 +58,10 @@
   },
   "devDependencies": {
     "@babel/core": "7.11.6",
+    "@sitearcade/babel-preset": "0.2.0",
     "@sitearcade/browserslist-config": "0.2.0",
-    "@sitearcade/eslint-config": "0.2.6",
-    "@sitearcade/jest-preset": "0.0.2",
+    "@sitearcade/eslint-config": "0.2.7",
+    "@sitearcade/jest-preset": "0.1.2",
     "babel-eslint": "11.0.0-beta.2",
     "eslint": "7.10.0",
     "eslint-import-resolver-lerna": "1.1.0",
@@ -78,11 +82,17 @@
     "jest": "26.5.2",
     "microbundle": "0.12.4",
     "npm-run-all": "4.1.5",
+    "raf-stub": "3.0.0",
     "react": "16.13.1",
     "react-dom": "16.13.1"
   },
   "engines": {
     "node": ">=10"
+  },
+  "babel": {
+    "presets": [
+      "module:@sitearcade/babel-preset"
+    ]
   },
   "browserslist": [
     "extends @sitearcade/browserslist-config"
