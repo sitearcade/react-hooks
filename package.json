@@ -14,8 +14,6 @@
   "sideEffects": false,
   "source": "src/index.js",
   "main": "./dist/index.js",
-  "browser": "./dist/index.umd.js",
-  "umd:main": "./dist/index.umd.js",
   "jsnext:main": "./dist/index.modern.js",
   "module": "./dist/index.module.js",
   "syntax": {
@@ -24,7 +22,6 @@
   "exports": {
     ".": {
       "browser": "./dist/index.module.js",
-      "umd": "./dist/index.umd.js",
       "import": "./dist/index.module.js",
       "require": "./dist/index.js"
     }
@@ -33,12 +30,8 @@
     "dist"
   ],
   "scripts": {
-    "start": "run-p start:*",
-    "start:umd": "microbundle watch --no-compress -f umd --external none",
-    "start:mod": "microbundle watch --no-compress -f cjs,esm,modern",
-    "build": "run-s build:* --",
-    "build:umd": "microbundle --no-compress --globals react=React,react-dom=ReactDOM -f umd --external none",
-    "build:mod": "microbundle --no-compress --globals react=React,react-dom=ReactDOM -f cjs,esm,modern",
+    "start": "microbundle watch --no-compress -f cjs,esm,modern",
+    "build": "microbundle --no-compress -f cjs,esm,modern",
     "clean": "rm -rf dist",
     "test": "NODE_ENV=testing jest --passWithNoTests --coverage",
     "test:ci": "NODE_ENV=testing jest --passWithNoTests --ci",
