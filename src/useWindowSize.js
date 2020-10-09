@@ -2,7 +2,7 @@
 
 import {isClient} from '@sitearcade/is-env';
 
-import useWindowEvents from './useWindowEvents';
+import {useWindowEvents} from './useWindowEvents';
 
 // vars
 
