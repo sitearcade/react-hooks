@@ -1,0 +1,79 @@
+{
+  "name": "@sitearcade/dom-hooks",
+  "version": "0.0.0",
+  "description": "React hooks for dealing with the DOM.",
+  "license": "MIT",
+  "homepage": "https://sitearcade.com",
+  "repository": "github:sitearcade/dom-hooks",
+  "bugs": "https://github.com/sitearcade/dom-hooks/issues",
+  "author": {
+    "name": "Mike Stop Continues",
+    "email": "mike@sitearcade.com",
+    "url": "https://sitearcade.com"
+  },
+  "source": "src/index.js",
+  "main": "dist/index.js",
+  "module": "dist/index.modern.js",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "start": "microbundle watch --no-compress --format modern,cjs",
+    "build": "microbundle --no-compress --format modern,cjs",
+    "test": "NODE_ENV=testing jest --passWithNoTests --coverage",
+    "test:ci": "NODE_ENV=testing jest --passWithNoTests --ci",
+    "test:watch": "NODE_ENV=testing jest --passWithNoTests --coverage --watch",
+    "preversion": "npm test",
+    "postversion": "npm publish --access public",
+    "prepublish": "npm run build",
+    "postpublish": "git push origin --all; git push origin --tags"
+  },
+  "dependencies": {
+    "@sitearcade/is-env": "^0",
+    "dequal": "^2.0.2"
+  },
+  "peerDependencies": {
+    "react": ">=16"
+  },
+  "devDependencies": {
+    "@babel/core": "7.11.6",
+    "@sitearcade/browserslist-config": "0.2.0",
+    "@sitearcade/eslint-config": "0.2.6",
+    "@sitearcade/jest-preset": "0.0.2",
+    "babel-eslint": "11.0.0-beta.2",
+    "eslint-import-resolver-lerna": "1.1.0",
+    "eslint-plugin-babel": "5.3.1",
+    "eslint-plugin-better-styled-components": "1.1.2",
+    "eslint-plugin-eslint-comments": "3.2.0",
+    "eslint-plugin-fp": "2.3.0",
+    "eslint-plugin-import": "2.22.1",
+    "eslint-plugin-jest-formatting": "2.0.0",
+    "eslint-plugin-jest": "24.1.0",
+    "eslint-plugin-jsx-a11y": "6.3.1",
+    "eslint-plugin-lodash": "7.1.0",
+    "eslint-plugin-optimize-regex": "1.2.0",
+    "eslint-plugin-promise": "4.2.1",
+    "eslint-plugin-ramda": "2.5.1",
+    "eslint-plugin-react-hooks": "4.1.2",
+    "eslint-plugin-react": "7.21.3",
+    "eslint": "7.10.0",
+    "jest": "26.5.2",
+    "microbundle": "0.12.4",
+    "react-dom": "16.13.1",
+    "react": "16.13.1"
+  },
+  "engines": {
+    "node": ">=10"
+  },
+  "browserslist": [
+    "extends @sitearcade/browserslist-config"
+  ],
+  "eslintConfig": {
+    "extends": [
+      "@sitearcade/eslint-config"
+    ]
+  },
+  "jest": {
+    "preset": "@sitearcade/jest-preset"
+  }
+}
