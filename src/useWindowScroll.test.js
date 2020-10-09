@@ -22,8 +22,8 @@ describe('useWindowScroll(ms)', () => {
     expect(hook.result.current).toStrictEqual({x: 0, y: 0});
 
     act(() => {
-      window.scrollX = 1;
-      window.scrollY = 1;
+      window.pageXOffset = 1;
+      window.pageYOffset = 1;
       fireEvent.scroll(window);
     });
     await waitForTimeout(1);
