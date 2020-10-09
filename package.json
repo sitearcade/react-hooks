@@ -41,7 +41,7 @@
     "test": "NODE_ENV=testing jest --passWithNoTests --coverage",
     "test:ci": "NODE_ENV=testing jest --passWithNoTests --ci",
     "test:watch": "NODE_ENV=testing jest --passWithNoTests --coverage --watch",
-    "preversion": "npm test",
+    "preversion": "npm run build && npm test",
     "postversion": "npm publish --access public",
     "prepublish": "npm run clean && npm run build",
     "postpublish": "git push origin --all; git push origin --tags"
