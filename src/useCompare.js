@@ -1,6 +1,6 @@
 // import
 
-import isEqual from 'dequal/lite';
+import {dequal} from 'dequal/lite';
 import {useEffect, useRef, useState, useMemo, useCallback, useContext} from 'react';
 
 // export
@@ -8,7 +8,7 @@ import {useEffect, useRef, useState, useMemo, useCallback, useContext} from 'rea
 export function useCompare(val = null) {
   const ref = useRef(null);
 
-  if (!isEqual(ref.current, val)) {
+  if (!dequal(ref.current, val)) {
     ref.current = val;
   }
 
@@ -17,7 +17,7 @@ export function useCompare(val = null) {
 
 export function useCompareSetter(state, setState) {
   return useCallback((v) => (
-    isEqual(state, v) ? null : setState(v)
+    dequal(state, v) ? null : setState(v)
   ), []);
 }
 
