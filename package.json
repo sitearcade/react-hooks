@@ -1,6 +1,6 @@
 {
   "name": "@sitearcade/react-hooks",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "React hooks for dealing with the DOM.",
   "license": "MIT",
   "homepage": "https://sitearcade.com",
