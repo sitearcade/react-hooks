@@ -1,11 +1,11 @@
 {
-  "name": "@sitearcade/dom-hooks",
+  "name": "@sitearcade/react-hooks",
   "version": "0.0.1",
   "description": "React hooks for dealing with the DOM.",
   "license": "MIT",
   "homepage": "https://sitearcade.com",
-  "repository": "github:sitearcade/dom-hooks",
-  "bugs": "https://github.com/sitearcade/dom-hooks/issues",
+  "repository": "github:sitearcade/react-hooks",
+  "bugs": "https://github.com/sitearcade/react-hooks/issues",
   "author": {
     "name": "Mike Stop Continues",
     "email": "mike@sitearcade.com",
