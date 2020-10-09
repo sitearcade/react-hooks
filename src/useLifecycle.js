@@ -1,10 +1,9 @@
 // import
 
-import React from 'react';
+import {useEffect, useCallback, useRef} from 'react';
 
 // fns
 
-const {useEffect, useCallback, useRef} = React;
 const noop = () => undefined;
 
 // state
