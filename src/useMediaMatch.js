@@ -1,12 +1,11 @@
 // import
 
-import {useState, useEffect} from 'react';
-
 import {isServer} from '@sitearcade/is-env';
+import {useState, useEffect} from 'react';
 
 // export
 
-export function useMatchMedia(query) {
+export function useMediaMatch(query) {
   const [isMatch, setIsMatch] = useState(false);
 
   useEffect(() => {
