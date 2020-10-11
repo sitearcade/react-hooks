@@ -3,13 +3,13 @@
   "version": "0.0.14",
   "description": "React hooks for dealing with the DOM.",
   "license": "MIT",
-  "homepage": "https://sitearcade.com",
+  "homepage": "https://www.sitearcade.com",
   "repository": "github:sitearcade/react-hooks",
   "bugs": "https://github.com/sitearcade/react-hooks/issues",
   "author": {
     "name": "Mike Stop Continues",
     "email": "mike@sitearcade.com",
-    "url": "https://sitearcade.com"
+    "url": "https://www.sitearcade.com"
   },
   "sideEffects": false,
   "source": "src/index.js",
