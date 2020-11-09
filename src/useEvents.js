@@ -2,7 +2,7 @@
 
 import {useEffect, useRef} from 'react';
 
-import throttle from './utils';
+import {throttle} from './utils';
 
 // vars
 
