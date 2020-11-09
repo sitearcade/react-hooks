@@ -1,6 +1,6 @@
 // import
 
-import {useEffect, useRef} from 'react';
+import {useEffect, useState, useCallback} from 'react';
 
 import {throttle} from './utils';
 
@@ -11,23 +11,23 @@ const defOpts = {capture: true, passive: false};
 // export
 
 export function useEvents(fn, events = [], opts = defOpts, ms = 0) {
-  const eventRef = useRef(null);
+  const [domNode, setDomNode] = useState(null);
 
   useEffect(() => {
-    if (!eventRef.current) {
+    if (!domNode) {
       return;
     }
 
     const handler = ms ? throttle(fn, ms, ms * 10) : fn;
-    events.map((e) => eventRef.current.addEventListener(e, handler, opts));
+    events.map((e) => domNode.addEventListener(e, handler, opts));
 
     return () => {
-      events.map((e) => eventRef.current.removeEventListener(e, handler));
+      events.map((e) => domNode.removeEventListener(e, handler));
       handler.cancel?.();
     };
-  }, [fn, events, ms]);
+  }, [fn, events, ms, domNode]);
 
-  return eventRef;
+  return useCallback((ref) => setDomNode(ref), []);
 }
 
 export function useCapture(fn, events) {
