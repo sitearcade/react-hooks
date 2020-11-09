@@ -1,6 +1,7 @@
 // export
 
 export * from './useCompare';
+export * from './useEvents';
 export * from './useForceUpdate';
 export * from './useHover';
 export * from './useLifecycle';
