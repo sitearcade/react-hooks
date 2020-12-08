@@ -1,75 +1,35 @@
 // import
 
-import {useRef, useEffect, useCallback, useMemo} from 'react';
+import {useRef, useEffect, useCallback} from 'react';
 
 // vars
 
-const viewUrl = process.env.ARC_VIEW_URL;
-const editUrl = process.env.ARC_EDIT_URL;
-
-// fns
-
-const noop = () => null;
-const isFunction = (fn) => typeof fn === 'function';
-const isString = (fn) => typeof fn === 'string';
-
-const getContentWindow = (ref) => ref.current?.contentWindow;
-
-const getHandler = (onMessage, filterOrigin) => (
-  isFunction(onMessage) ?
-    (event) => {
-      if (
-        isFunction(filterOrigin) ?
-          filterOrigin(event.origin) :
-          isString(filterOrigin) ?
-            event.origin.includes(filterOrigin) :
-            true
-      ) {
-        onMessage(event.data, event);
-      }
-    } : noop
-);
+const listenerOpts = {capture: false, passive: true};
 
 // export
 
-export function useWindowRadio(target, onMessage) {
+export function useWindowRadio(target, origin, onMessage) {
   useEffect(() => {
-    if (!target) {
+    if (!target || !window) {
       return;
     }
 
-    const handler = getHandler(onMessage, editUrl);
+    const handler = (event) => (
+      origin === '*' || event.origin === origin ?
+        onMessage(event.data, event) : null
+    );
 
-    window.addEventListener('message', handler, false);
+    window.addEventListener('message', handler, listenerOpts);
 
     return () => window.removeEventListener('message', handler);
-  }, [target, onMessage]);
+  }, [target, origin, onMessage]);
 
-  return useCallback((msg) => target?.postMessage(msg, editUrl), [target]);
+  return useCallback((msg) => target?.postMessage(msg, origin), [target, origin]);
 }
 
-// TODO: Seems like I should be able to merge with useWindowRadio!
-
-export function useFrameRadio(onMessage) {
+export function useFrameRadio(origin, onMessage) {
   const frameRef = useRef(null);
-  const contentWindow = getContentWindow(frameRef);
+  const target = frameRef.current?.contentWindow ?? null;
 
-  useEffect(() => {
-    if (!contentWindow) {
-      return;
-    }
-
-    const handler = getHandler(onMessage, viewUrl);
-
-    window.addEventListener('message', handler, false);
-
-    return () => window.removeEventListener('message', handler);
-  }, [contentWindow, onMessage]);
-
-  return useMemo(() => {
-    return [
-      frameRef,
-      (msg) => contentWindow?.postMessage(msg, viewUrl),
-    ];
-  }, []);
+  return [frameRef, useWindowRadio(target, origin, onMessage)];
 }
