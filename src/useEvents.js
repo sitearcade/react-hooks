@@ -2,7 +2,7 @@
 
 import {useEffect, useState, useCallback} from 'react';
 
-import {throttle} from './utils';
+import {debounce} from './useDebounce';
 
 // vars
 
@@ -18,7 +18,7 @@ export function useEvents(fn, events = [], opts = defOpts, ms = 0) {
       return;
     }
 
-    const handler = ms ? throttle(fn, ms, ms * 10) : fn;
+    const handler = ms ? debounce(fn, ms, ms * 10) : fn;
     events.map((e) => domNode.addEventListener(e, handler, opts));
 
     return () => {
