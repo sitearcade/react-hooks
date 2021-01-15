@@ -6,32 +6,44 @@ import {useEffect, useCallback, useRef} from 'react';
 
 const noop = () => undefined;
 
-// state
+// refs
 
-export function useIsMount() {
-  const firstMount = useRef(true);
+export function useIsMountRef() {
+  const ref = useRef(true);
 
-  if (firstMount.current) {
-    firstMount.current = false;
+  useEffect(() => (ref.current = false), []);
 
-    return true;
-  }
-
-  return false;
+  return ref;
 }
 
+export function useIsMount() {
+  return useIsMountRef().current;
+}
+
+export function useIsUpdateRef() {
+  const ref = useRef(false);
+
+  useEffect(() => (ref.current = true), []);
+
+  return ref;
+}
+
+export function useIsUpdate() {
+  return useIsUpdateRef().current;
+}
+
+// state
+
 export function useIsMounted() {
-  const mountRef = useRef(false);
+  const ref = useRef(false);
 
   useEffect(() => {
-    mountRef.current = true;
+    ref.current = true;
 
-    return () => {
-      mountRef.current = false;
-    };
-  });
+    return () => (ref.current = false);
+  }, []);
 
-  return useCallback(() => mountRef.current, []);
+  return useCallback(() => ref.current, []);
 }
 
 // effects
@@ -41,20 +53,18 @@ export function useMountEffect(mountFn = noop) {
 }
 
 export function useUpdateEffect(updateFn = noop, deps = null) {
-  const isMount = useIsMount();
+  const isUpdate = useIsUpdate();
+  const ref = useRef(updateFn);
+  ref.current = updateFn;
 
-  useEffect(() => {
-    if (!isMount) {
-      return updateFn();
-    }
-  }, deps);
+  useEffect(() => isUpdate && ref.current(), deps);
 }
 
 export function useUnmountEffect(unmountFn = noop) {
-  const unmountRef = useRef(unmountFn);
-  unmountRef.current = unmountFn;
+  const ref = useRef(unmountFn);
+  ref.current = unmountFn;
 
-  useEffect(() => unmountRef.current, []);
+  useEffect(() => ref.current, []);
 }
 
 export function useLifecycleEffect(mountFn, unmountFn) {

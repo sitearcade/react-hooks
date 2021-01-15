@@ -2,7 +2,7 @@
 
 import {renderHook} from '@sitearcade/jest-preset/tools';
 
-import {useIsMount, useIsMounted, useUpdateEffect, useLifecycleEffect} from './useLifecycle';
+import {useIsMount, useIsUpdate, useIsMounted, useUpdateEffect, useLifecycleEffect} from './useLifecycle';
 
 describe('useIsMount()', () => {
   it('accurately describes state of component', () => {
@@ -17,6 +17,22 @@ describe('useIsMount()', () => {
     hook.rerender();
 
     expect(hook.result.current).toBeFalse();
+  });
+});
+
+describe('useIsUpdate()', () => {
+  it('accurately describes state of component', () => {
+    const hook = renderHook(() => useIsUpdate());
+
+    expect(hook.result.current).toBeFalse();
+
+    hook.rerender();
+
+    expect(hook.result.current).toBeTrue();
+
+    hook.rerender();
+
+    expect(hook.result.current).toBeTrue();
   });
 });
 

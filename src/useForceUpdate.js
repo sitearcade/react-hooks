@@ -1,15 +1,19 @@
 // import
 
-import {useState, useCallback} from 'react';
+import {useReducer} from 'react';
 
 import {useMountEffect} from './useLifecycle';
+
+// fns
+
+const updateReducer = (num) => num++ % 1_000;
 
 // lifecyle
 
 export function useForceUpdate() {
-  const [, set] = useState(Date.now());
+  const [, update] = useReducer(updateReducer, 0);
 
-  return useCallback(() => set(Date.now()), []);
+  return update;
 }
 
 export function useUpdateOnMount() {
