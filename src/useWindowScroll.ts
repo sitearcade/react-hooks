@@ -19,6 +19,6 @@ function getScroll() {
 
 // export
 
-export function useWindowScroll(ms) {
+export function useWindowScroll(ms?: number) {
   return useWindowEvents(getScroll, events, ms);
 }

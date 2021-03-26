@@ -6,7 +6,7 @@ import {useMountEffect} from './useLifecycle';
 
 // fns
 
-const updateReducer = (num) => num++ % 1_000;
+const updateReducer = (num: number) => num++ % 1_000;
 
 // lifecyle
 

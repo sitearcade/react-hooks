@@ -11,8 +11,8 @@ describe('debounce(fn, min, max)', () => {
     const spy = jest.fn();
     const handler = debounce(spy);
 
-    expect(handler).toBeFunction();
-    expect(handler.cancel).toBeFunction();
+    expect(handler).toBeInstanceOf(Function);
+    expect(handler.cancel).toBeInstanceOf(Function);
 
     handler('test');
     handler('test');
@@ -41,7 +41,7 @@ describe('useDebounce(fn, wait, leading)', () => {
     const {rerender, result} = renderHook(({spy}) => useDebounce(spy), {initialProps: {spy: spy1}});
     const handler = result.current;
 
-    expect(handler).toBeFunction();
+    expect(handler).toBeInstanceOf(Function);
 
     handler('test');
     handler('test');

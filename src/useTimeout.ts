@@ -9,7 +9,7 @@ const noop = () => null;
 // hooks
 
 export function useTimeoutEffect(timeoutFn = noop, ms = 0) {
-  const timeout = useRef();
+  const timeout = useRef(0);
   const callback = useRef(timeoutFn);
 
   useEffect(() => {
@@ -19,7 +19,7 @@ export function useTimeoutEffect(timeoutFn = noop, ms = 0) {
   useEffect(() => {
     clearTimeout(timeout.current);
 
-    timeout.current = setTimeout(() => {
+    timeout.current = window.setTimeout(() => {
       callback.current();
     }, ms);
 

@@ -1,7 +1,7 @@
 // import
 
 import {renderHook, fireEvent, act, waitForTimeout} from '@sitearcade/jest-preset/tools';
-import {replaceRaf} from 'raf-stub';
+import fakeRaf from 'fake-raf';
 
 import {useWindowEvents} from './useWindowEvents';
 
@@ -9,11 +9,11 @@ import {useWindowEvents} from './useWindowEvents';
 
 describe('useWindowEvents(onEvent, events, ms)', () => {
   beforeAll(() => {
-    replaceRaf();
+    fakeRaf.use();
   });
 
   afterEach(() => {
-    requestAnimationFrame.reset();
+    fakeRaf.restore();
   });
 
   it('calls onEvent immediately, then on event trigger', async () => {
@@ -25,7 +25,7 @@ describe('useWindowEvents(onEvent, events, ms)', () => {
     act(() => {
       fireEvent.wheel(window);
       fireEvent.scroll(window);
-      requestAnimationFrame.step();
+      fakeRaf.step();
     });
     await waitForTimeout(1);
 
@@ -46,7 +46,7 @@ describe('useWindowEvents(onEvent, events, ms)', () => {
 
     act(() => {
       fireEvent.scroll(window);
-      requestAnimationFrame.step();
+      fakeRaf.step();
     });
     await waitForTimeout(1);
 
@@ -54,7 +54,7 @@ describe('useWindowEvents(onEvent, events, ms)', () => {
 
     act(() => {
       fireEvent.wheel(window);
-      requestAnimationFrame.step();
+      fakeRaf.step();
     });
     await waitForTimeout(1);
 
@@ -73,7 +73,7 @@ describe('useWindowEvents(onEvent, events, ms)', () => {
       fireEvent.scroll(window);
       fireEvent.scroll(window);
       fireEvent.scroll(window);
-      requestAnimationFrame.step();
+      fakeRaf.step();
     });
     await waitForTimeout(1);
 

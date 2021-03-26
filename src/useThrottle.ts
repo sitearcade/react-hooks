@@ -4,12 +4,20 @@ import {useRef, useCallback, useEffect, useState} from 'react';
 
 import {useLatestRef} from './useLatest';
 
+// type
+
+type ThrottledFunc = (...args: any[]) => void;
+
 // export
 
-export function useThrottle(fn, wait = 0, leading = false) {
+export function useThrottle<T extends ThrottledFunc>(
+  fn: T,
+  wait = 0,
+  leading = false,
+) {
   const func = useLatestRef(fn);
   const prev = useRef(0);
-  const id = useRef(null);
+  const id = useRef(0);
 
   useEffect(() => () => {
     clearTimeout(id.current);
@@ -40,14 +48,18 @@ export function useThrottle(fn, wait = 0, leading = false) {
 
     clearTimeout(id.current);
 
-    id.current = setTimeout(() => {
+    id.current = window.setTimeout(() => {
       call();
       prev.current = 0;
     }, wait);
   }, [wait, leading]);
 }
 
-export function useThrottleState(initial, wait, leading) {
+export function useThrottleState<T extends any>(
+  initial: T,
+  wait?: number,
+  leading?: boolean,
+) {
   const [state, setState] = useState(initial);
 
   return [state, useThrottle(setState, wait, leading)];

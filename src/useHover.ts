@@ -5,7 +5,7 @@ import {useRef, useEffect, useState} from 'react';
 // export
 
 export function useHover(enabled = true) {
-  const hoverRef = useRef(null);
+  const hoverRef = useRef<HTMLElement>();
   const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {

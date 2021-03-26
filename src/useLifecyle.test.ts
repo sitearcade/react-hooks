@@ -8,15 +8,15 @@ describe('useIsMount()', () => {
   it('accurately describes state of component', () => {
     const hook = renderHook(() => useIsMount());
 
-    expect(hook.result.current).toBeTrue();
+    expect(hook.result.current).toStrictEqual(true);
 
     hook.rerender();
 
-    expect(hook.result.current).toBeFalse();
+    expect(hook.result.current).toStrictEqual(false);
 
     hook.rerender();
 
-    expect(hook.result.current).toBeFalse();
+    expect(hook.result.current).toStrictEqual(false);
   });
 });
 
@@ -24,15 +24,15 @@ describe('useIsUpdate()', () => {
   it('accurately describes state of component', () => {
     const hook = renderHook(() => useIsUpdate());
 
-    expect(hook.result.current).toBeFalse();
+    expect(hook.result.current).toStrictEqual(false);
 
     hook.rerender();
 
-    expect(hook.result.current).toBeTrue();
+    expect(hook.result.current).toStrictEqual(true);
 
     hook.rerender();
 
-    expect(hook.result.current).toBeTrue();
+    expect(hook.result.current).toStrictEqual(true);
   });
 });
 
@@ -40,15 +40,15 @@ describe('useIsMounted()', () => {
   it('accurately describes state of component', () => {
     const hook = renderHook(() => useIsMounted());
 
-    expect(hook.result.current()).toBeTrue();
+    expect(hook.result.current()).toStrictEqual(true);
 
     hook.rerender();
 
-    expect(hook.result.current()).toBeTrue();
+    expect(hook.result.current()).toStrictEqual(true);
 
     hook.unmount();
 
-    expect(hook.result.current()).toBeFalse();
+    expect(hook.result.current()).toStrictEqual(false);
   });
 });
 

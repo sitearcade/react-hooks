@@ -1,7 +1,7 @@
 // import
 
 import {renderHook, fireEvent, waitForTimeout, act} from '@sitearcade/jest-preset/tools';
-import {replaceRaf} from 'raf-stub';
+import fakeRaf from 'fake-raf';
 
 import {useWindowScroll} from './useWindowScroll';
 
@@ -9,11 +9,11 @@ import {useWindowScroll} from './useWindowScroll';
 
 describe('useWindowScroll(ms)', () => {
   beforeAll(() => {
-    replaceRaf();
+    fakeRaf.use();
   });
 
   afterEach(() => {
-    requestAnimationFrame.reset();
+    fakeRaf.restore();
   });
 
   it('always returns accurate scroll {x,y}', async () => {
@@ -22,13 +22,17 @@ describe('useWindowScroll(ms)', () => {
     expect(hook.result.current).toStrictEqual({x: 0, y: 0});
 
     act(() => {
+      // @ts-expect-error Mocking window
       window.pageXOffset = 1;
+      // @ts-expect-error Mocking window
       window.pageYOffset = 1;
       fireEvent.scroll(window);
     });
+
     await waitForTimeout(1);
+
     act(() => {
-      requestAnimationFrame.step();
+      fakeRaf.step();
     });
 
     expect(hook.result.current).toStrictEqual({x: 1, y: 1});

@@ -1,7 +1,9 @@
 // import
 
 import {renderHook, fireEvent, act, render} from '@sitearcade/jest-preset/tools';
+import type {Ref} from 'react';
 
+import type {PostMessage} from './useWindowRadio';
 import {useWindowRadio, useFrameRadio} from './useWindowRadio';
 
 // vars
@@ -18,7 +20,7 @@ beforeAll(() => {
 describe('useWindowRadio(target, origin, onMessage)', () => {
   it('binds to target window', () => {
     const onMessage = jest.fn();
-    let postMessage = null;
+    let postMessage: PostMessage | null = null;
 
     renderHook(() => {
       postMessage = useWindowRadio(window, '*', onMessage);
@@ -28,13 +30,13 @@ describe('useWindowRadio(target, origin, onMessage)', () => {
       fireEvent(window, new MessageEvent('message', {data: 'test'}));
     });
 
-    expect(postMessage).toBeFunction();
+    expect(postMessage).toBeInstanceOf(Function);
     expect(onMessage).toHaveBeenCalledWith('test', expect.anything());
   });
 
   it('filters by origin, if specified', () => {
     const onMessage = jest.fn();
-    let postMessage = null;
+    let postMessage: PostMessage | null = null;
 
     renderHook(() => {
       postMessage = useWindowRadio(window, testOrigin, onMessage);
@@ -42,7 +44,7 @@ describe('useWindowRadio(target, origin, onMessage)', () => {
 
     act(() => {
       fireEvent(window, new MessageEvent('message', {data: 'test'}));
-      postMessage('test');
+      postMessage?.('test');
     });
 
     expect(onMessage).toHaveBeenCalledTimes(1);
@@ -53,8 +55,8 @@ describe('useFrameRadio(origin, onMessage)', () => {
   it('binds to ref target `node.contentWindow`', async () => {
     const onWindowMessage = jest.fn();
     const onIframeMessage = jest.fn();
-    let frameRef = null;
-    let postMessage = null;
+    let frameRef: Ref<HTMLIFrameElement> | null = null;
+    let postMessage: PostMessage | null = null;
 
     const Comp = () => {
       [frameRef, postMessage] = useFrameRadio(testOrigin, onWindowMessage);
@@ -77,10 +79,10 @@ describe('useFrameRadio(origin, onMessage)', () => {
       fireEvent(window, new MessageEvent('message', {
         data: 'test', origin: testOrigin,
       }));
-      postMessage('test');
+      postMessage?.('test');
     });
 
-    expect(postMessage).toBeFunction();
+    expect(postMessage).toBeInstanceOf(Function);
     expect(onWindowMessage).toHaveBeenCalledWith('test', expect.anything());
     expect(onIframeMessage).toHaveBeenCalled();
   });

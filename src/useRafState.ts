@@ -6,7 +6,7 @@ import {useUnmountEffect} from './useLifecycle';
 
 // hook
 
-export function useRafState(initialState) {
+export function useRafState<T>(initialState: T) {
   const frame = useRef(0);
   const [state, setState] = useState(initialState);
 

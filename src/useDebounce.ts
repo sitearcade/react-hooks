@@ -4,14 +4,27 @@ import {useRef, useCallback, useEffect, useState} from 'react';
 
 import {useLatestRef} from './useLatest';
 
+// types
+
+type DeboundedFunc = (...args: any[]) => void;
+
+export interface DebounceHandler {
+  (...args: any[]): void;
+  cancel: () => void;
+}
+export interface MaybeDebounceHandler {
+  (...args: any[]): void;
+  cancel?: () => void;
+}
+
 // fns
 
-export function debounce(fn, min = 0, max = 0) {
-  let id = null;
+export function debounce<T extends DeboundedFunc>(fn: T, min = 0, max = 0) {
+  let id = 0;
   let dead = false;
   let lastExec = 0;
 
-  function handler(...args) {
+  function handler(...args: Parameters<T>) {
     if (dead) {
       return;
     }
@@ -24,10 +37,10 @@ export function debounce(fn, min = 0, max = 0) {
 
     clearTimeout(id);
 
-    id = setTimeout(() => {
+    id = window.setTimeout(() => {
       fn(...args);
       lastExec = Date.now();
-      id = null;
+      id = 0;
     }, delay);
   }
 
@@ -36,24 +49,28 @@ export function debounce(fn, min = 0, max = 0) {
     dead = true;
   };
 
-  return handler;
+  return handler as DebounceHandler;
 }
 
 // export
 
-export function useDebounce(fn, wait = 0, leading = false) {
+export function useDebounce(
+  fn: DeboundedFunc,
+  wait = 0,
+  leading = false,
+) {
   const func = useLatestRef(fn);
-  const id = useRef(null);
+  const id = useRef<number>(0);
 
   useEffect(() => () => {
     clearTimeout(id.current);
-    id.current = null;
+    id.current = 0;
   }, [wait, leading]);
 
   return useCallback((...args) => {
-    if (id.current === null && leading) {
-      id.current = setTimeout(() => {
-        id.current = null;
+    if (id.current === 0 && leading) {
+      id.current = window.setTimeout(() => {
+        id.current = 0;
       }, wait);
 
       return func.current(...args);
@@ -61,15 +78,19 @@ export function useDebounce(fn, wait = 0, leading = false) {
 
     clearTimeout(id.current);
 
-    id.current = setTimeout(() => {
-      id.current = null;
+    id.current = window.setTimeout(() => {
+      id.current = 0;
       func.current(...args);
     }, wait);
   }, [wait, leading]);
 }
 
-export function useDebounceState(initial, wait, leading) {
-  const [state, setState] = useState(initial);
+export function useDebounceState<T extends any>(
+  initial: T,
+  wait?: number,
+  leading?: boolean,
+) {
+  const [state, setState] = useState<T>(initial);
 
   return [state, useDebounce(setState, wait, leading)];
 }
