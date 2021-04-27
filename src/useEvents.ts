@@ -6,9 +6,14 @@ import {useEffect, useState, useCallback} from 'react';
 import type {MaybeDebounceHandler} from './useDebounce';
 import {debounce} from './useDebounce';
 
+// types
+
+type EventOpts = AddEventListenerOptions | EventListenerOptions;
+
 // vars
 
 const defOpts = {
+  once: false,
   capture: true,
   passive: false,
 };
@@ -18,7 +23,7 @@ const defOpts = {
 export function useEvents(
   fn?: (event: Event) => void,
   events: string[] = [],
-  opts = defOpts,
+  opts: EventOpts = defOpts,
   ms = 0,
 ): Ref<HTMLElement> {
   const [domNode, setDomNode] = useState<HTMLElement>();
@@ -36,13 +41,7 @@ export function useEvents(
       events.map((e) => domNode.removeEventListener(e, handler));
       handler.cancel?.();
     };
-  }, [fn, events, ms, domNode]);
+  }, [fn, events, ms, domNode, opts]);
 
   return useCallback((ref) => setDomNode(ref), []);
-}
-
-export function useCapture(fn?: (event: Event) => void, events?: string[]) {
-  return useEvents((e: Event) => (
-    e.defaultPrevented || (fn?.(e) && e.preventDefault())
-  ), events);
 }

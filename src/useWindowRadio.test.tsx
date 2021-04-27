@@ -66,19 +66,22 @@ describe('useFrameRadio(origin, onMessage)', () => {
 
     const dom = render(<Comp />);
     dom.rerender(<Comp />);
-    const iframe = await dom.findByTitle('iframe');
+    const iframe = await dom.findByTitle('iframe') as HTMLIFrameElement;
 
-    iframe.contentWindow.addEventListener('message', onIframeMessage, false);
+    iframe.contentWindow?.addEventListener('message', onIframeMessage, false);
 
-    iframe.contentWindow.postMessage = (data) =>
-      fireEvent(iframe.contentWindow, new MessageEvent('message', {
-        data, origin: 'http://localhost',
-      }));
+    if (iframe.contentWindow) {
+      iframe.contentWindow.postMessage = (data) =>
+        fireEvent(iframe.contentWindow ?? window, new MessageEvent('message', {
+          data, origin: 'http://localhost',
+        }));
+    }
 
     act(() => {
       fireEvent(window, new MessageEvent('message', {
         data: 'test', origin: testOrigin,
       }));
+
       postMessage?.('test');
     });
 

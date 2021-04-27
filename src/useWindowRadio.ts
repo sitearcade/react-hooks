@@ -17,16 +17,12 @@ const listenerOpts = {capture: false, passive: true};
 export function useWindowRadio(
   target: Window,
   origin: string,
-  onMessage: OnMessage,
+  onMessage?: OnMessage,
 ) {
   useEffect(() => {
-    if (!target || !window) {
-      return;
-    }
-
     const handler = <U>(event: MessageEvent<U>) => (
       origin === '*' || event.origin === origin ?
-        onMessage(event.data, event) : null
+        onMessage?.(event.data, event) : null
     );
 
     window.addEventListener('message', handler, listenerOpts);
@@ -34,7 +30,10 @@ export function useWindowRadio(
     return () => window.removeEventListener('message', handler);
   }, [target, origin, onMessage]);
 
-  return useCallback<PostMessage>((msg) => target?.postMessage(msg, origin), [target, origin]);
+  return useCallback<PostMessage>(
+    (msg) => target.postMessage(msg, origin),
+    [target, origin, onMessage],
+  );
 }
 
 export function useFrameRadio(

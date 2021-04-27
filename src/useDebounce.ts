@@ -2,14 +2,12 @@
 
 import {useRef, useCallback, useEffect, useState} from 'react';
 
-import {useLatestRef} from './useLatest';
-
 // types
 
-type DeboundedFunc = (...args: any[]) => void;
+type Func = (...args: any[]) => void;
 
-export interface DebounceHandler {
-  (...args: any[]): void;
+export interface DebounceHandler<T extends Func> {
+  (...args: Parameters<T>): void;
   cancel: () => void;
 }
 export interface MaybeDebounceHandler {
@@ -19,7 +17,11 @@ export interface MaybeDebounceHandler {
 
 // fns
 
-export function debounce<T extends DeboundedFunc>(fn: T, min = 0, max = 0) {
+export function debounce<T extends Func>(
+  fn: T,
+  min = 0,
+  max = 0,
+): DebounceHandler<T> {
   let id = 0;
   let dead = false;
   let lastExec = 0;
@@ -49,17 +51,18 @@ export function debounce<T extends DeboundedFunc>(fn: T, min = 0, max = 0) {
     dead = true;
   };
 
-  return handler as DebounceHandler;
+  return handler;
 }
 
 // export
 
-export function useDebounce(
-  fn: DeboundedFunc,
+export function useDebounce<T extends Func>(
+  fn: T,
   wait = 0,
   leading = false,
 ) {
-  const func = useLatestRef(fn);
+  const func = useRef(fn);
+  func.current = fn;
   const id = useRef<number>(0);
 
   useEffect(() => () => {
@@ -67,13 +70,13 @@ export function useDebounce(
     id.current = 0;
   }, [wait, leading]);
 
-  return useCallback((...args) => {
+  return useCallback((...args: Parameters<T>) => {
     if (id.current === 0 && leading) {
       id.current = window.setTimeout(() => {
         id.current = 0;
       }, wait);
 
-      return func.current(...args);
+      func.current(...args);
     }
 
     clearTimeout(id.current);
@@ -85,7 +88,7 @@ export function useDebounce(
   }, [wait, leading]);
 }
 
-export function useDebounceState<T extends any>(
+export function useDebounceState<T>(
   initial: T,
   wait?: number,
   leading?: boolean,

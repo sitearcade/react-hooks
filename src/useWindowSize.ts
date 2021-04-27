@@ -12,8 +12,8 @@ const events = ['resize'];
 
 function getSize() {
   return {
-    width: isClient ? window.outerWidth : 0,
-    height: isClient ? window.outerHeight : 0,
+    width: isClient ? window.innerWidth : 0,
+    height: isClient ? window.innerHeight : 0,
   };
 }
 

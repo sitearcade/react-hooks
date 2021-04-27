@@ -11,7 +11,6 @@ export * from './useRafState';
 export * from './useTimeout';
 export * from './useThrottle';
 export * from './useDebounce';
-export * from './useLatest';
 export * from './useWindowEvents';
 export * from './useWindowRadio';
 export * from './useWindowScroll';

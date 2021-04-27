@@ -16,6 +16,7 @@ describe('debounce(fn, min, max)', () => {
 
     handler('test');
     handler('test');
+
     await waitForTimeout();
 
     expect(spy).toHaveBeenCalledWith('test');
@@ -28,6 +29,7 @@ describe('debounce(fn, min, max)', () => {
     handler('test');
     handler.cancel();
     handler('test');
+
     await waitForTimeout();
 
     expect(spy).toHaveBeenCalledTimes(1);
@@ -38,25 +40,33 @@ describe('useDebounce(fn, wait, leading)', () => {
   it('returns debounced function and updates with args', async () => {
     const spy1 = jest.fn();
     const spy2 = jest.fn();
-    const {rerender, result} = renderHook(({spy}) => useDebounce(spy), {initialProps: {spy: spy1}});
+    const {rerender, result} = renderHook(
+      ({spy}) => useDebounce(spy),
+      {initialProps: {spy: spy1}},
+    );
     const handler = result.current;
 
     expect(handler).toBeInstanceOf(Function);
 
     handler('test');
     handler('test');
+
     await waitForTimeout();
 
     expect(spy1).toHaveBeenCalledWith('test');
     expect(spy1).toHaveBeenCalledTimes(1);
 
+    handler('test');
+
     await waitForTimeout();
 
-    expect(spy1).toHaveBeenCalledTimes(1);
+    expect(spy1).toHaveBeenCalledTimes(2);
 
+    handler('test');
     handler('test');
     rerender({spy: spy2});
     handler('test');
+
     await waitForTimeout();
 
     expect(spy1).toHaveBeenCalledTimes(2);

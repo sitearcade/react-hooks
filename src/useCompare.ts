@@ -37,7 +37,7 @@ export function useCompareMemo<T>(fn: () => T, deps) {
   return useMemo(fn, useCompare(deps));
 }
 
-export function useCompareCallback<T extends any>(
+export function useCompareCallback<T>(
   fn: () => T,
   deps: DependencyList = [],
 ) {

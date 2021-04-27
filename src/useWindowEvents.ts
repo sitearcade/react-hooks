@@ -12,14 +12,14 @@ const listenerOpts = {capture: false, passive: true};
 // export
 
 export function useWindowEvents(
-  fn: (e?: Event) => void,
+  fn?: (e?: Event) => void,
   events: string[] = [],
-  ms = 0,
+  ms: number = 0,
 ) {
-  const [state, setState] = useRafState(() => fn());
+  const [state, setState] = useRafState(() => fn?.());
 
   useEffect(() => {
-    const handler = debounce((e) => setState(fn(e)), ms, ms * 10);
+    const handler = debounce((e) => setState(fn?.(e)), ms, ms * 10);
 
     events.map((e) => window.addEventListener(e, handler, listenerOpts));
 
