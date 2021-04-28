@@ -1,9 +1,9 @@
 // import
 
 import {useEffect} from 'react';
+import {useRafState} from 'react-use';
 
 import {debounce} from './useDebounce';
-import {useRafState} from './useRafState';
 
 // vars
 
@@ -11,15 +11,15 @@ const listenerOpts = {capture: false, passive: true};
 
 // export
 
-export function useWindowEvents(
-  fn?: (e?: Event) => void,
+export function useWindowEvents<T>(
+  fn: (e?: Event) => T,
   events: string[] = [],
   ms: number = 0,
 ) {
-  const [state, setState] = useRafState(() => fn?.());
+  const [state, setState] = useRafState(() => fn());
 
   useEffect(() => {
-    const handler = debounce((e) => setState(fn?.(e)), ms, ms * 10);
+    const handler = debounce((e) => setState(fn(e)), ms, ms * 10);
 
     events.map((e) => window.addEventListener(e, handler, listenerOpts));
 

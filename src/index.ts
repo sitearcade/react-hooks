@@ -7,7 +7,6 @@ export * from './useHover';
 export * from './useLifecycle';
 export * from './useMediaMatch';
 export * from './usePosition';
-export * from './useRafState';
 export * from './useTimeout';
 export * from './useThrottle';
 export * from './useDebounce';
