@@ -4,7 +4,7 @@ import {useEffect, useRef} from 'react';
 
 // vars
 
-const noop = () => null;
+const noop: () => void = () => undefined;
 
 // hooks
 
