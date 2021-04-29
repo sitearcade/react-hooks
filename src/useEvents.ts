@@ -20,8 +20,8 @@ const defOpts = {
 
 // export
 
-export function useEvents(
-  fn?: (event: Event) => void,
+export function useEvents<E extends Event = Event>(
+  fn?: (event: E) => void,
   events: string[] = [],
   opts: EventOpts = defOpts,
   ms = 0,
