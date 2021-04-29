@@ -5,8 +5,8 @@ import {useRef, useEffect, useCallback} from 'react';
 
 // types
 
-export type PostMessage = <T>(msg: T) => void;
-export type OnMessage = <T>(data: T, event: MessageEvent<T>) => void;
+export type OnMessage<T = unknown> = (data: T, event: MessageEvent) => void;
+export type PostMessage<U = unknown> = (msg: U) => void;
 
 // vars
 
@@ -14,13 +14,13 @@ const listenerOpts = {capture: false, passive: true};
 
 // export
 
-export function useWindowRadio(
+export function useWindowRadio<T, U>(
   target: Window,
   origin: string,
-  onMessage?: OnMessage,
+  onMessage?: OnMessage<T>,
 ) {
   useEffect(() => {
-    const handler = <U>(event: MessageEvent<U>) => (
+    const handler = (event: MessageEvent) => (
       origin === '*' || event.origin === origin ?
         onMessage?.(event.data, event) : null
     );
@@ -30,16 +30,16 @@ export function useWindowRadio(
     return () => window.removeEventListener('message', handler);
   }, [target, origin, onMessage]);
 
-  return useCallback<PostMessage>(
+  return useCallback<PostMessage<U>>(
     (msg) => target.postMessage(msg, origin),
     [target, origin, onMessage],
   );
 }
 
-export function useFrameRadio(
+export function useFrameRadio<T, U>(
   origin: string,
-  onMessage: OnMessage,
-): [Ref<HTMLIFrameElement>, PostMessage] {
+  onMessage: OnMessage<T>,
+): [Ref<HTMLIFrameElement>, PostMessage<U>] {
   const frameRef = useRef<HTMLIFrameElement>(null);
   const target = frameRef.current?.contentWindow ?? window;
 
