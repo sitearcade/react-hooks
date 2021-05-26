@@ -49,3 +49,9 @@ export function useCompareState<T>(init: T) {
 
   return [state, useCompareSetter(state, setState)];
 }
+
+export function useCompareResult<T>(fn: () => T) {
+  const result = useCompare(fn());
+
+  return useMemo(() => result, [result]);
+}
