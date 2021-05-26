@@ -43,21 +43,19 @@
     "react-dom": ">=17"
   },
   "devDependencies": {
-    "@babel/core": "7.14.3",
     "@sitearcade/babel-preset": "1.2.3",
     "@sitearcade/browserslist-config": "0.3.1",
     "@sitearcade/eslint-config": "1.6.2",
     "@sitearcade/jest-preset": "4.0.0",
+    "@sitearcade/prettier-config": "0.0.1",
     "fake-raf": "1.0.1",
-    "jest": "27.0.1",
     "microbundle": "0.13.0",
     "react": "17.0.2",
     "react-dom": "17.0.2",
-    "ts-jest": "27.0.0",
     "typescript": "4.2.4"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "babel": {
     "presets": [
@@ -74,5 +72,6 @@
   },
   "jest": {
     "preset": "@sitearcade/jest-preset"
-  }
+  },
+  "prettier": "@sitearcade/prettier-config"
 }
